@@ -56,6 +56,54 @@ const deviceSchema = new mongoose.Schema({
     type: Number,
     default: 0,
     min: 0
+  },
+  era: {
+    type: String,
+    enum: ['70s', '80s', '90s', '2000s', '2010s'],
+    default: function() {
+      if (this.year >= 2010) return '2010s';
+      if (this.year >= 2000) return '2000s';
+      if (this.year >= 1990) return '90s';
+      if (this.year >= 1980) return '80s';
+      return '70s';
+    }
+  },
+  sound: {
+    type: String,
+    default: null
+  },
+  price: {
+    original: {
+      type: Number,
+      min: 0
+    },
+    currency: {
+      type: String,
+      default: 'USD'
+    },
+    vintageValue: {
+      type: Number,
+      min: 0
+    }
+  },
+  predecessorId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Device',
+    default: null
+  },
+  successorId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Device',
+    default: null
+  },
+  relatedDevices: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Device'
+  }],
+  rarity: {
+    type: String,
+    enum: ['common', 'uncommon', 'rare', 'legendary'],
+    default: 'common'
   }
 }, {
   timestamps: true,

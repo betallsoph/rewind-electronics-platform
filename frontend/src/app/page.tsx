@@ -1,14 +1,23 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import CustomCursor from '@/components/CustomCursor';
+import ParticleBackground from '@/components/ParticleBackground';
 import Header from '@/components/Header';
 import Navigation from '@/components/Navigation';
 import DeviceGrid from '@/components/DeviceGrid';
 import SearchBar from '@/components/SearchBar';
 import DeviceModal from '@/components/DeviceModal';
 import Footer from '@/components/Footer';
+import Timeline3D from '@/components/Timeline3D';
+import DeviceComparison from '@/components/DeviceComparison';
+import MemoryWall from '@/components/MemoryWall';
+import AchievementDisplay from '@/components/AchievementDisplay';
 import { devicesApi, categoriesApi } from '@/lib/api';
 import type { Device, Category } from '@/types';
+import styles from './page.module.css';
+
+type ViewMode = 'grid' | 'timeline' | 'memories' | 'achievements';
 
 export default function Home() {
   const [devices, setDevices] = useState<Device[]>([]);
@@ -20,6 +29,11 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
+  const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const [compareMode, setCompareMode] = useState<boolean>(false);
+  const [selectedForComparison, setSelectedForComparison] = useState<Device[]>([]);
+  const [showComparison, setShowComparison] = useState<boolean>(false);
+  const [username] = useState('Guest_' + Math.random().toString(36).substr(2, 9));
 
   // Fetch categories
   useEffect(() => {
@@ -44,8 +58,8 @@ export default function Home() {
           category: selectedCategory !== 'all' ? selectedCategory : undefined,
           search: searchQuery || undefined,
           page,
-          limit: 12,
-          sortBy: 'createdAt',
+          limit: 50,
+          sortBy: 'year',
           order: 'desc',
         });
         setDevices(response.data);
@@ -68,26 +82,31 @@ export default function Home() {
   }, [selectedCategory, searchQuery, page]);
 
   const handleDeviceClick = async (device: Device) => {
-    try {
-      // Fetch full device details (which will increment views)
-      const response = await devicesApi.getById(device._id);
-      setSelectedDevice(response.data);
-    } catch (err) {
-      console.error('Error fetching device details:', err);
-      setSelectedDevice(device);
+    if (compareMode) {
+      if (selectedForComparison.find(d => d._id === device._id)) {
+        setSelectedForComparison(prev => prev.filter(d => d._id !== device._id));
+      } else if (selectedForComparison.length < 3) {
+        setSelectedForComparison(prev => [...prev, device]);
+      }
+    } else {
+      try {
+        const response = await devicesApi.getById(device._id);
+        setSelectedDevice(response.data);
+      } catch (err) {
+        console.error('Error fetching device details:', err);
+        setSelectedDevice(device);
+      }
     }
   };
 
   const handleLikeDevice = async (deviceId: string) => {
     try {
       await devicesApi.like(deviceId);
-      // Update the device in the list
       setDevices(prevDevices =>
         prevDevices.map(d =>
           d._id === deviceId ? { ...d, likes: d.likes + 1 } : d
         )
       );
-      // Update selected device if it's the one being liked
       if (selectedDevice && selectedDevice._id === deviceId) {
         setSelectedDevice({ ...selectedDevice, likes: selectedDevice.likes + 1 });
       }
@@ -96,79 +115,163 @@ export default function Home() {
     }
   };
 
-  return (
-    <div>
-      <Header />
-      <Navigation
-        categories={categories}
-        selectedCategory={selectedCategory}
-        onCategoryChange={setSelectedCategory}
-      />
-      <main style={{ padding: '40px 0', minHeight: 'calc(100vh - 400px)' }}>
-        <div className="container">
-          <SearchBar value={searchQuery} onChange={setSearchQuery} />
-          
-          {error && (
-            <div style={{
-              backgroundColor: 'rgba(255, 107, 107, 0.2)',
-              border: '2px solid var(--primary-color)',
-              borderRadius: '10px',
-              padding: '20px',
-              marginBottom: '20px',
-              textAlign: 'center',
-            }}>
-              <p style={{ color: 'var(--primary-color)', fontSize: '1.1rem' }}>
-                ⚠️ {error}
-              </p>
-            </div>
-          )}
+  const ViewModeSelector = () => (
+    <div className={styles.viewModeSelector}>
+      <button
+        className={`${styles.viewBtn} ${viewMode === 'grid' ? styles.active : ''}`}
+        onClick={() => setViewMode('grid')}
+      >
+        <span>🔲</span> Grid
+      </button>
+      <button
+        className={`${styles.viewBtn} ${viewMode === 'timeline' ? styles.active : ''}`}
+        onClick={() => setViewMode('timeline')}
+      >
+        <span>⏳</span> Timeline 3D
+      </button>
+      <button
+        className={`${styles.viewBtn} ${viewMode === 'memories' ? styles.active : ''}`}
+        onClick={() => setViewMode('memories')}
+      >
+        <span>💭</span> Ký Ức
+      </button>
+      <button
+        className={`${styles.viewBtn} ${viewMode === 'achievements' ? styles.active : ''}`}
+        onClick={() => setViewMode('achievements')}
+      >
+        <span>🏆</span> Thành Tích
+      </button>
+    </div>
+  );
 
-          <DeviceGrid
-            devices={devices}
-            loading={loading}
-            onDeviceClick={handleDeviceClick}
-            onLikeDevice={handleLikeDevice}
-          />
-
-          {!loading && devices.length > 0 && totalPages > 1 && (
-            <div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              gap: '10px',
-              marginTop: '40px',
-            }}>
-              <button
-                className="btn btn-secondary"
-                onClick={() => setPage(p => Math.max(1, p - 1))}
-                disabled={page === 1}
-              >
-                ← Trước
-              </button>
-              <span style={{ color: 'var(--text-light)' }}>
-                Trang {page} / {totalPages}
-              </span>
-              <button
-                className="btn btn-secondary"
-                onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-                disabled={page === totalPages}
-              >
-                Sau →
-              </button>
-            </div>
+  const ComparisonTools = () => (
+    <div className={styles.comparisonTools}>
+      <button
+        className={`btn-neon ${compareMode ? styles.activeCompare : ''}`}
+        onClick={() => {
+          setCompareMode(!compareMode);
+          if (!compareMode) setSelectedForComparison([]);
+        }}
+      >
+        {compareMode ? '✖ Hủy So Sánh' : '⚖️ So Sánh Thiết Bị'}
+      </button>
+      
+      {compareMode && selectedForComparison.length > 0 && (
+        <div className={styles.selectedCount}>
+          Đã chọn: {selectedForComparison.length}/3
+          {selectedForComparison.length >= 2 && (
+            <button
+              className="btn-neon"
+              onClick={() => setShowComparison(true)}
+              style={{ marginLeft: '15px' }}
+            >
+              So Sánh Ngay
+            </button>
           )}
         </div>
-      </main>
-
-      {selectedDevice && (
-        <DeviceModal
-          device={selectedDevice}
-          onClose={() => setSelectedDevice(null)}
-          onLike={handleLikeDevice}
-        />
       )}
-
-      <Footer />
     </div>
+  );
+
+  return (
+    <>
+      <CustomCursor />
+      <ParticleBackground />
+      
+      <div className={styles.app}>
+        <Header />
+        <Navigation
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onCategoryChange={setSelectedCategory}
+        />
+        
+        <main className={styles.main}>
+          <div className="container">
+            <ViewModeSelector />
+            
+            {viewMode === 'grid' && (
+              <>
+                <div className={styles.topBar}>
+                  <SearchBar value={searchQuery} onChange={setSearchQuery} />
+                  <ComparisonTools />
+                </div>
+
+                {error && (
+                  <div className={styles.errorBox}>
+                    <p>⚠️ {error}</p>
+                  </div>
+                )}
+
+                <DeviceGrid
+                  devices={devices}
+                  loading={loading}
+                  onDeviceClick={handleDeviceClick}
+                  onLikeDevice={handleLikeDevice}
+                />
+
+                {!loading && devices.length > 0 && totalPages > 1 && (
+                  <div className={styles.pagination}>
+                    <button
+                      className="btn-neon"
+                      onClick={() => setPage(p => Math.max(1, p - 1))}
+                      disabled={page === 1}
+                    >
+                      ← Trước
+                    </button>
+                    <span className={styles.pageInfo}>
+                      Trang {page} / {totalPages}
+                    </span>
+                    <button
+                      className="btn-neon"
+                      onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                      disabled={page === totalPages}
+                    >
+                      Sau →
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+
+            {viewMode === 'timeline' && !loading && (
+              <Timeline3D 
+                devices={devices}
+                onDeviceClick={handleDeviceClick}
+              />
+            )}
+
+            {viewMode === 'memories' && (
+              <MemoryWall />
+            )}
+
+            {viewMode === 'achievements' && (
+              <AchievementDisplay username={username} />
+            )}
+          </div>
+        </main>
+
+        {selectedDevice && !compareMode && (
+          <DeviceModal
+            device={selectedDevice}
+            onClose={() => setSelectedDevice(null)}
+            onLike={handleLikeDevice}
+          />
+        )}
+
+        {showComparison && selectedForComparison.length >= 2 && (
+          <DeviceComparison
+            devices={selectedForComparison}
+            onClose={() => {
+              setShowComparison(false);
+              setCompareMode(false);
+              setSelectedForComparison([]);
+            }}
+          />
+        )}
+
+        <Footer />
+      </div>
+    </>
   );
 }
