@@ -26,6 +26,7 @@ app.use('/api/categories', require('./routes/categories'));
 app.use('/api/memories', require('./routes/memories'));
 app.use('/api/collections', require('./routes/collections'));
 app.use('/api/achievements', require('./routes/achievements'));
+app.use('/api/upload', require('./routes/upload'));
 
 // Health check
 app.get('/api/health', (req, res) => {

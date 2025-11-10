@@ -17,6 +17,19 @@ const memorySchema = new mongoose.Schema({
     type: String,
     default: null
   },
+  avatarUrl: {
+    type: String,
+    default: null
+  },
+  avatarKey: {
+    type: String,
+    default: null
+  },
+  photos: [{
+    url: String,
+    key: String,
+    caption: String,
+  }],
   title: {
     type: String,
     required: [true, 'Title is required'],

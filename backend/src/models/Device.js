@@ -27,6 +27,19 @@ const deviceSchema = new mongoose.Schema({
     type: String,
     default: null
   },
+  imageUrl: {
+    type: String,
+    default: null
+  },
+  imageKey: {
+    type: String,
+    default: null
+  },
+  images: [{
+    url: String,
+    key: String,
+    caption: String,
+  }],
   description: {
     type: String,
     required: [true, 'Description is required'],

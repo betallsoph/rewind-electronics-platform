@@ -28,9 +28,31 @@ export default function DeviceCard({ device, onClick, onLike }: DeviceCardProps)
     onLike(e);
   };
 
+  // Determine which image to show
+  const imageUrl = device.imageUrl || device.image;
+
   return (
     <div className={styles.card} onClick={onClick}>
-      <div className={styles.image}>{device.emoji}</div>
+      {imageUrl ? (
+        <div className={styles.imageContainer}>
+          <img 
+            src={imageUrl} 
+            alt={device.name}
+            className={styles.realImage}
+            onError={(e) => {
+              // Fallback to emoji if image fails to load
+              const target = e.target as HTMLImageElement;
+              target.style.display = 'none';
+              if (target.nextSibling) {
+                (target.nextSibling as HTMLElement).style.display = 'flex';
+              }
+            }}
+          />
+          <div className={styles.image} style={{ display: 'none' }}>{device.emoji}</div>
+        </div>
+      ) : (
+        <div className={styles.image}>{device.emoji}</div>
+      )}
       <div className={styles.content}>
         <span className={styles.category}>{getCategoryName(device.category)}</span>
         <h2 className={styles.title}>{device.name}</h2>

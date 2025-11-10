@@ -5,6 +5,13 @@ export interface Device {
   category: 'phone' | 'computer' | 'console' | 'audio' | 'camera' | 'other';
   emoji: string;
   image?: string;
+  imageUrl?: string;
+  imageKey?: string;
+  images?: Array<{
+    url: string;
+    key: string;
+    caption?: string;
+  }>;
   description: string;
   memories: string;
   specifications?: Record<string, string>;

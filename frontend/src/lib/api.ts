@@ -24,13 +24,13 @@ export const devicesApi = {
     return data;
   },
 
-  // Create new device
+  // Create new device (JSON only - use upload.ts for images)
   create: async (device: Partial<Device>): Promise<ApiResponse<Device>> => {
     const { data } = await api.post('/devices', device);
     return data;
   },
 
-  // Update device
+  // Update device (JSON only - use upload.ts for images)
   update: async (id: string, device: Partial<Device>): Promise<ApiResponse<Device>> => {
     const { data } = await api.put(`/devices/${id}`, device);
     return data;

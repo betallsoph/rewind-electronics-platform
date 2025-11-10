@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { body, validationResult, query } = require('express-validator');
 const Device = require('../models/Device');
+const { uploadSingleImage, uploadMultipleImages, deleteFromR2 } = require('../middleware/upload');
 
 // Validation middleware
 const handleValidationErrors = (req, res, next) => {
@@ -111,7 +112,7 @@ router.get('/:id', async (req, res) => {
 // @route   POST /api/devices
 // @desc    Create a new device
 // @access  Public (should be protected in production)
-router.post('/', [
+router.post('/', uploadSingleImage('deviceImage'), [
   body('name').trim().notEmpty().withMessage('Name is required').isLength({ max: 100 }),
   body('year').isInt({ min: 1900, max: new Date().getFullYear() }).withMessage('Valid year is required'),
   body('category').isIn(['phone', 'computer', 'console', 'audio', 'camera', 'other']).withMessage('Valid category is required'),
@@ -123,7 +124,15 @@ router.post('/', [
   body('specifications').optional().isObject()
 ], handleValidationErrors, async (req, res) => {
   try {
-    const device = new Device(req.body);
+    const deviceData = req.body;
+    
+    // If image was uploaded via multipart, use that
+    if (req.uploadedFile) {
+      deviceData.imageUrl = req.uploadedFile.url;
+      deviceData.imageKey = req.uploadedFile.key;
+    }
+    
+    const device = new Device(deviceData);
     await device.save();
     
     res.status(201).json({
@@ -144,7 +153,7 @@ router.post('/', [
 // @route   PUT /api/devices/:id
 // @desc    Update a device
 // @access  Public (should be protected in production)
-router.put('/:id', [
+router.put('/:id', uploadSingleImage('deviceImage'), [
   body('name').optional().trim().isLength({ max: 100 }),
   body('year').optional().isInt({ min: 1900, max: new Date().getFullYear() }),
   body('category').optional().isIn(['phone', 'computer', 'console', 'audio', 'camera', 'other']),
@@ -156,9 +165,27 @@ router.put('/:id', [
   body('specifications').optional().isObject()
 ], handleValidationErrors, async (req, res) => {
   try {
+    const updateData = req.body;
+    
+    // If new image was uploaded, update image fields and delete old one
+    if (req.uploadedFile) {
+      const oldDevice = await Device.findById(req.params.id);
+      if (oldDevice && oldDevice.imageKey) {
+        // Delete old image from R2
+        try {
+          await deleteFromR2(oldDevice.imageKey);
+        } catch (err) {
+          console.error('Error deleting old image:', err);
+        }
+      }
+      
+      updateData.imageUrl = req.uploadedFile.url;
+      updateData.imageKey = req.uploadedFile.key;
+    }
+    
     const device = await Device.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      updateData,
       { new: true, runValidators: true }
     );
     
@@ -189,7 +216,7 @@ router.put('/:id', [
 // @access  Public (should be protected in production)
 router.delete('/:id', async (req, res) => {
   try {
-    const device = await Device.findByIdAndDelete(req.params.id);
+    const device = await Device.findById(req.params.id);
     
     if (!device) {
       return res.status(404).json({ 
@@ -197,6 +224,30 @@ router.delete('/:id', async (req, res) => {
         message: 'Device not found' 
       });
     }
+    
+    // Delete associated images from R2
+    if (device.imageKey) {
+      try {
+        await deleteFromR2(device.imageKey);
+      } catch (err) {
+        console.error('Error deleting device image:', err);
+      }
+    }
+    
+    // Delete multiple images if any
+    if (device.images && device.images.length > 0) {
+      for (const img of device.images) {
+        if (img.key) {
+          try {
+            await deleteFromR2(img.key);
+          } catch (err) {
+            console.error('Error deleting device gallery image:', err);
+          }
+        }
+      }
+    }
+    
+    await Device.findByIdAndDelete(req.params.id);
     
     res.json({
       success: true,
