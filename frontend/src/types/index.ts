@@ -12,6 +12,17 @@ export interface Device {
   likes: number;
   views: number;
   age?: number;
+  era?: '70s' | '80s' | '90s' | '2000s' | '2010s';
+  sound?: string;
+  price?: {
+    original?: number;
+    currency?: string;
+    vintageValue?: number;
+  };
+  predecessorId?: string;
+  successorId?: string;
+  relatedDevices?: string[];
+  rarity?: 'common' | 'uncommon' | 'rare' | 'legendary';
   createdAt: string;
   updatedAt: string;
 }

@@ -23,6 +23,9 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use('/api/devices', require('./routes/devices'));
 app.use('/api/categories', require('./routes/categories'));
+app.use('/api/memories', require('./routes/memories'));
+app.use('/api/collections', require('./routes/collections'));
+app.use('/api/achievements', require('./routes/achievements'));
 
 // Health check
 app.get('/api/health', (req, res) => {
