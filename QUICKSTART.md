@@ -1,153 +1,46 @@
-# 🚀 Quick Start Guide
+# 🚀 Quick Start Guide (Go Backend + Nuxt Frontend)
 
 ## Prerequisites
-- Node.js 18+ 
-- MongoDB 6.0+
-- npm or yarn
+- Go 1.21+
+- Node.js 18+
+- npm
 
-## 1. Setup Backend (5 minutes)
-
+## 1. Start the Go backend (3 phút)
 ```bash
-cd backend
+cd go-backend
+cp .env.example .env        # tuỳ chọn, chỉnh ALLOWED_ORIGINS nếu cần
+GOPROXY=off go mod tidy     # đảm bảo module đầy đủ trong môi trường offline
+go run ./cmd/server
+```
+✅ API sẵn sàng tại http://localhost:8080 với data từ `internal/data/seed.json`.
+
+## 2. Chạy Nuxt 3 + Ionic frontend (2 phút)
+```bash
+cd nuxt-frontend
 npm install
-cp .env.example .env
-```
-
-Edit `.env`:
-```env
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/retro-electronics
-FRONTEND_URL=http://localhost:3000
-```
-
-Seed database with sample data:
-```bash
-npm run seed
-```
-
-Start backend:
-```bash
 npm run dev
 ```
+✅ Frontend chạy ở http://localhost:3000. Nếu backend ở host/port khác, chỉnh `NUXT_PUBLIC_API_BASE` trong `.env`.
 
-✅ Backend running at http://localhost:5000
+## 3. Khám phá giao diện
+- **Hero Banner**: CTA "Khám phá ký ức" với hiệu ứng glassmorphism.
+- **Device Grid**: Filter theo category, era, rarity; click thiết bị để xem chi tiết.
+- **Comparison Drawer**: Chọn 2-3 thiết bị rồi nhấn "So sánh ngay" để xem bảng so sánh.
+- **Stats & Dashboard**: Thống kê tổng quan kéo từ `/api/dashboard`.
+- **Memory Timeline**: Ký ức được hiển thị theo thời gian, filter theo thiết bị.
+- **Collections & Achievements**: Các bộ sưu tập và thành tựu nổi bật từ dataset.
 
-## 2. Setup Frontend (3 minutes)
+## 🛠️ Troubleshooting nhanh
+| Vấn đề | Giải pháp |
+|--------|-----------|
+| Backend báo lỗi CORS | Thêm origin của frontend vào `ALLOWED_ORIGINS` trong `.env`. |
+| Frontend không gọi được API | Kiểm tra `NUXT_PUBLIC_API_BASE` và chắc chắn backend đang chạy. |
+| Lỗi go mod tải dependency | Dùng `GOPROXY=off go env -w GONOSUMDB=*` nếu môi trường cấm mạng. |
+| Nuxt báo thiếu Ionic | Chạy lại `npm install` trong `nuxt-frontend`. |
 
-Open new terminal:
+## 📚 Tài liệu tiếp theo
+- `COMPLETE_GUIDE.md` – hướng dẫn chi tiết từng module.
+- `FEATURES.md` – danh sách đầy đủ tính năng UI/UX.
+- `SUMMARY.md` – tổng hợp deliverables cho phiên bản mới.
 
-```bash
-cd frontend
-npm install
-cp .env.local.example .env.local
-```
-
-Start frontend:
-```bash
-npm run dev
-```
-
-✅ Frontend running at http://localhost:3000
-
-## 3. Open in Browser
-
-Visit: http://localhost:3000
-
-## 🎮 What to Try
-
-### View Modes
-- **Grid View**: Classic card layout
-- **Timeline 3D**: Scroll through devices by era with 3D parallax
-- **Ký Ức**: Read and share memories
-- **Thành Tích**: Track your progress and achievements
-
-### Features
-- 🔍 Search devices
-- 📂 Filter by category/era
-- ⚖️ Compare 2-3 devices side-by-side
-- 💭 Share your own memories
-- 🏆 Unlock achievements
-- ❤️ Like devices
-- 👁️ View details with modal
-
-### Try Comparison
-1. Click "⚖️ So Sánh Thiết Bị"
-2. Click on 2-3 devices
-3. Click "So Sánh Ngay"
-
-### Share Memory
-1. Switch to "💭 Ký Ức" view
-2. Click "+ Thêm Ký Ức"
-3. Fill in your story
-4. Submit!
-
-## 🎨 Features Overview
-
-- ✨ Glassmorphism UI
-- 🎭 Custom cursor
-- 🌟 Particle background
-- 🎯 3D card effects
-- 📊 Rarity system (Common → Legendary)
-- 💰 Price history (Original vs Vintage)
-- 🕰️ Era classification (70s-2010s)
-- 🏆 Achievement system
-- 💭 Community memories
-
-## 📱 Sample Data
-
-12 legendary devices already loaded:
-- Nokia 1110 (2005)
-- Sony Walkman (1985)
-- Game Boy (1989) - LEGENDARY
-- Commodore 64 (1982) - LEGENDARY
-- iPod Classic (2001) - LEGENDARY
-- PlayStation 1 (1994) - LEGENDARY
-- And more...
-
-## 🐛 Troubleshooting
-
-### MongoDB not starting?
-```bash
-# Mac
-brew services start mongodb-community
-
-# Linux
-sudo systemctl start mongod
-
-# Check status
-mongosh
-```
-
-### Port already in use?
-```bash
-# Backend (change PORT in .env)
-PORT=5001
-
-# Frontend
-# Kill process on port 3000 or use different port:
-npm run dev -- -p 3001
-```
-
-### Dependencies issue?
-```bash
-# Clear and reinstall
-rm -rf node_modules package-lock.json
-npm install
-```
-
-## 🎯 Next Steps
-
-1. Try all view modes
-2. Compare devices
-3. Share a memory
-4. Unlock achievements
-5. Explore timeline 3D view
-6. Check different eras
-
-## 📚 Documentation
-
-- Full README: `README.md`
-- Features list: `FEATURES.md`
-- API docs: Check backend routes
-
-Enjoy! 🎉
+Enjoy the new retro experience! 🎉

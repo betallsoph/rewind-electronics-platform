@@ -1,405 +1,126 @@
-# 📱 Hoài Niệm Thiết Bị Điện Tử | Retro Electronics
+# 📱 Hoài Niệm Thiết Bị Điện Tử | Retro Electronics (Go + Nuxt Edition)
 
-> Một ứng dụng blog đầy đủ với frontend (Next.js) và backend (Node.js + MongoDB) để lưu trữ và hoài niệm về các thiết bị điện tử huyền thoại qua các thời kỳ.
+> Một bản dựng lại toàn diện sử dụng **Go (net/http)** cho backend và **Nuxt 3 + Ionic Vue** cho frontend để kể lại hành trình của những thiết bị điện tử huyền thoại.
+>
+> _English summary available below._
 
-**🚀 Production Ready** | **✨ Modern UI** | **🎮 Interactive** | **📱 Responsive**
+[Quick Start (8 phút)](./QUICKSTART.md) · [Complete Guide](./COMPLETE_GUIDE.md) · [Features](./FEATURES.md) · [Summary](./SUMMARY.md)
 
-[Quick Start (8 min)](./QUICKSTART.md) · [Complete Guide](./COMPLETE_GUIDE.md) · [Features](./FEATURES.md)
+---
 
 ## 🌟 Highlights
 
-### 🎨 Frontend Excellence
-- **4 View Modes**: Grid, Timeline 3D, Memory Wall, Achievements
-- **Glassmorphism UI**: Modern design với glass effects
-- **Custom Cursor**: Interactive cursor (desktop)
-- **Particle Background**: Animated canvas background
-- **Keyboard Shortcuts**: Fast navigation (press ⌨️ to see)
-- **Toast Notifications**: Real-time feedback
-- **Device Comparison**: Compare 2-3 devices side-by-side
-- **Rarity System**: Common → Uncommon → Rare → Legendary
-- **Era Explorer**: 70s → 80s → 90s → 2000s → 2010s
-- **Community Features**: Share memories, upvote, achievements
+### 🎨 Frontend Excellence (Nuxt 3 + Ionic)
+- **Glassmorphism landing** với hero, thống kê và lời kêu gọi hành động nổi bật.
+- **Rarity filters & category pills** trong `nuxt-frontend/components/DeviceGrid.vue` giúp duyệt bộ sưu tập dễ dàng.
+- **Comparison Drawer** hỗ trợ so sánh 2-3 thiết bị thông qua `/api/devices/compare`.
+- **Memory Timeline** và **Collections Showcase** tái hiện câu chuyện hoài niệm.
+- **Ionic components** (`ion-card`, `ion-modal`, `ion-badge`, `ion-button`) mang lại cảm giác mobile-native.
 
-### 🔧 Backend Power
-- **5 API Endpoints**: Devices, Categories, Memories, Collections, Achievements
-- **4 Database Models**: Device, Memory, Collection, Achievement
-- **Advanced Features**: Price history, device relationships, gamification
-- **Text Search**: Full-text search với MongoDB
-- **Real-time Stats**: Views, likes, upvotes tracking
-- **Validation**: Complete input validation
-- **Performance**: Indexed queries, optimized aggregations
+### 🔧 Backend Power (Go)
+- **REST API** phục vụ thiết bị, danh mục, bộ sưu tập, thành tích, ký ức và dashboard.
+- **In-memory repository** được seed bằng `internal/data/seed.json` để trải nghiệm ngay lập tức.
+- **CORS cấu hình được** qua `.env` để frontend truy cập an toàn.
+- **Kiến trúc rõ ràng**: `internal/api` (handlers), `internal/models`, `internal/repository`.
+
+---
 
 ## 🏗️ Cấu trúc dự án
-
-```
+```text
 workspace/
-├── frontend/              # Next.js frontend
-│   ├── src/
-│   │   ├── app/          # App router pages
-│   │   │   ├── layout.tsx
-│   │   │   ├── page.tsx
-│   │   │   └── globals.css
-│   │   ├── components/   # React components
-│   │   │   ├── Header.tsx
-│   │   │   ├── Navigation.tsx
-│   │   │   ├── SearchBar.tsx
-│   │   │   ├── DeviceGrid.tsx
-│   │   │   ├── DeviceCard.tsx
-│   │   │   ├── DeviceModal.tsx
-│   │   │   └── Footer.tsx
-│   │   ├── lib/          # Utilities
-│   │   │   └── api.ts    # API client
-│   │   └── types/        # TypeScript types
-│   │       └── index.ts
-│   ├── package.json
-│   ├── tsconfig.json
-│   ├── next.config.js
-│   └── .env.local.example
+├── go-backend/
+│   ├── cmd/server/main.go      # Điểm khởi động ứng dụng
+│   ├── internal/api/           # Router và handlers
+│   ├── internal/config/        # Đọc biến môi trường + CORS
+│   ├── internal/data/seed.json # Dữ liệu mẫu phong phú
+│   ├── internal/models/        # Định nghĩa domain
+│   └── internal/repository/    # Truy vấn in-memory
 │
-├── backend/              # Node.js backend
-│   ├── src/
-│   │   ├── config/
-│   │   │   └── database.js    # MongoDB connection
-│   │   ├── models/
-│   │   │   └── Device.js      # Device model
-│   │   ├── routes/
-│   │   │   ├── devices.js     # Device routes
-│   │   │   └── categories.js  # Category routes
-│   │   ├── scripts/
-│   │   │   └── seed.js        # Database seeding
-│   │   └── index.js           # Express app
-│   ├── package.json
-│   ├── .env.example
-│   └── .gitignore
+├── nuxt-frontend/
+│   ├── components/             # Hero, DeviceGrid, StatsPanel, ...
+│   ├── composables/            # `useApi.ts` kết nối backend
+│   ├── pages/                  # Trang index chính
+│   ├── assets/styles/          # Chủ đề glassmorphism
+│   └── plugins/                # Cấu hình Ionic
 │
-└── README.md
+├── README.md                   # Tài liệu tổng quan (VI & EN)
+├── QUICKSTART.md               # Checklist khởi động
+├── COMPLETE_GUIDE.md           # Phân tích full-stack
+├── FEATURES.md                 # Danh mục tính năng
+└── SUMMARY.md                  # Tóm tắt bàn giao
 ```
+
+---
 
 ## 🚀 Hướng dẫn cài đặt
 
 ### Yêu cầu hệ thống
-- Node.js 18.x hoặc cao hơn
-- MongoDB 6.0 hoặc cao hơn
-- npm hoặc yarn
+- Go 1.21+
+- Node.js 18+
+- npm hoặc pnpm/yarn
 
-### 1. Clone repository
-
+### 1. Backend Go
 ```bash
-git clone <repository-url>
-cd workspace
+cd go-backend
+cp .env.example .env   # tuỳ chọn: thiết lập ORIGIN_ALLOWED
+GOPROXY=off go mod tidy
+go run ./cmd/server
+# API chạy tại http://localhost:8080
 ```
+Các endpoint chính:
+- `GET /api/health`
+- `GET /api/devices?category=&era=&search=&rarity=`
+- `GET /api/devices/:id`
+- `POST /api/devices/compare`
+- `GET /api/categories`
+- `GET /api/memories?deviceId=`
+- `GET /api/collections?theme=`
+- `GET /api/achievements`
+- `GET /api/dashboard`
 
-### 2. Setup Backend
-
+### 2. Frontend Nuxt 3 + Ionic
 ```bash
-# Di chuyển vào thư mục backend
-cd backend
-
-# Cài đặt dependencies
+cd nuxt-frontend
 npm install
-
-# Tạo file .env từ .env.example
-cp .env.example .env
-
-# Chỉnh sửa file .env với thông tin MongoDB của bạn
-# PORT=5000
-# MONGODB_URI=mongodb://localhost:27017/retro-electronics
-# FRONTEND_URL=http://localhost:3000
-```
-
-### 3. Khởi động MongoDB
-
-```bash
-# Nếu dùng MongoDB local
-mongod
-
-# Hoặc sử dụng MongoDB Atlas (cloud)
-# Cập nhật MONGODB_URI trong file .env với connection string từ Atlas
-```
-
-### 4. Seed dữ liệu mẫu
-
-```bash
-# Vẫn ở thư mục backend
-npm run seed
-```
-
-Lệnh này sẽ thêm 12 thiết bị điện tử mẫu vào database.
-
-### 5. Chạy Backend
-
-```bash
-# Development mode với nodemon
 npm run dev
-
-# Hoặc production mode
-npm start
+# UI chạy tại http://localhost:3000 và proxy đến http://localhost:8080/api
 ```
-
-Backend sẽ chạy tại `http://localhost:5000`
-
-### 6. Setup Frontend
-
+Để deploy production:
 ```bash
-# Mở terminal mới, di chuyển vào thư mục frontend
-cd frontend
-
-# Cài đặt dependencies
-npm install
-
-# Tạo file .env.local từ .env.local.example
-cp .env.local.example .env.local
-
-# File .env.local sẽ có nội dung:
-# NEXT_PUBLIC_API_URL=http://localhost:5000/api
-```
-
-### 7. Chạy Frontend
-
-```bash
-# Development mode
-npm run dev
-
-# Build cho production
+NUXT_PUBLIC_API_BASE=https://your-domain.example.com/api
 npm run build
-
-# Chạy production build
-npm start
+npm run preview
 ```
-
-Frontend sẽ chạy tại `http://localhost:3000`
-
-## 📡 API Endpoints
-
-### Devices
-
-| Method | Endpoint | Description | Query Params |
-|--------|----------|-------------|--------------|
-| GET | `/api/devices` | Lấy danh sách thiết bị | `page`, `limit`, `category`, `search`, `sortBy`, `order` |
-| GET | `/api/devices/:id` | Lấy chi tiết thiết bị | - |
-| POST | `/api/devices` | Tạo thiết bị mới | - |
-| PUT | `/api/devices/:id` | Cập nhật thiết bị | - |
-| DELETE | `/api/devices/:id` | Xóa thiết bị | - |
-| POST | `/api/devices/:id/like` | Like thiết bị | - |
-| GET | `/api/devices/stats/overview` | Thống kê tổng quan | - |
-
-### Categories
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/categories` | Lấy danh sách danh mục |
-| GET | `/api/categories/:id` | Lấy chi tiết danh mục |
-
-### Example Requests
-
-```bash
-# Lấy tất cả thiết bị
-curl http://localhost:5000/api/devices
-
-# Tìm kiếm thiết bị
-curl "http://localhost:5000/api/devices?search=Nokia&category=phone"
-
-# Tạo thiết bị mới
-curl -X POST http://localhost:5000/api/devices \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "iPhone 2G",
-    "year": 2007,
-    "category": "phone",
-    "emoji": "📱",
-    "description": "Chiếc iPhone đầu tiên...",
-    "memories": "Cách mạng di động..."
-  }'
-
-# Like thiết bị
-curl -X POST http://localhost:5000/api/devices/{id}/like
-```
-
-## 📝 Thêm thiết bị mới
-
-### Qua API
-
-Sử dụng POST request đến `/api/devices` với body:
-
-```json
-{
-  "name": "Tên thiết bị",
-  "year": 2000,
-  "category": "phone",
-  "emoji": "📱",
-  "description": "Mô tả ngắn gọn",
-  "memories": "Ký ức về thiết bị",
-  "specifications": {
-    "CPU": "...",
-    "RAM": "..."
-  },
-  "tags": ["tag1", "tag2"]
-}
-```
-
-### Qua Database
-
-Thêm trực tiếp vào file `backend/src/scripts/seed.js` và chạy lại:
-
-```bash
-cd backend
-npm run seed
-```
-
-## 🎨 Tùy chỉnh giao diện
-
-Màu sắc được định nghĩa trong `frontend/src/app/globals.css`:
-
-```css
-:root {
-  --primary-color: #ff6b6b;      /* Màu chính */
-  --secondary-color: #4ecdc4;    /* Màu phụ */
-  --accent-color: #ffe66d;       /* Màu nhấn */
-  --dark-bg: #1a1a2e;            /* Nền tối */
-  --card-bg: #16213e;            /* Nền card */
-  --text-light: #f1f1f1;         /* Chữ sáng */
-  --text-muted: #a0a0a0;         /* Chữ mờ */
-}
-```
-
-## 🌐 Deployment
-
-### Backend
-
-**Heroku / Railway / Render:**
-```bash
-# Set environment variables
-PORT=5000
-MONGODB_URI=<your-mongodb-atlas-uri>
-FRONTEND_URL=<your-frontend-url>
-NODE_ENV=production
-
-# Deploy
-git push heroku main
-```
-
-**VPS (Ubuntu):**
-```bash
-# Install PM2
-npm install -g pm2
-
-# Start backend
-cd backend
-pm2 start src/index.js --name retro-electronics-api
-
-# Setup nginx reverse proxy
-```
-
-### Frontend
-
-**Vercel (Recommended):**
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy
-cd frontend
-vercel
-
-# Set environment variable in Vercel dashboard:
-# NEXT_PUBLIC_API_URL=<your-backend-url>
-```
-
-**Netlify:**
-```bash
-# Build
-npm run build
-
-# Deploy dist folder to Netlify
-```
-
-## 📱 Thiết bị có sẵn
-
-Database đã có sẵn 12 thiết bị điện tử huyền thoại:
-
-1. **Nokia 1110** (2005) - Điện thoại huyền thoại với độ bền vô địch
-2. **Sony Walkman WM-2** (1985) - Máy nghe nhạc cassette di động
-3. **Nintendo Game Boy** (1989) - Máy chơi game cầm tay huyền thoại
-4. **Commodore 64** (1982) - Máy tính gia đình phổ biến nhất thập niên 80
-5. **Sony Discman D-50** (1990) - Máy nghe nhạc CD di động
-6. **Motorola RAZR V3** (2004) - Điện thoại nắp gập mỏng nhất
-7. **Sony PlayStation 1** (1994) - Máy chơi game thế hệ đầu tiên dùng CD
-8. **Apple iPod Classic** (2001) - Máy nghe nhạc MP3 cách mạng
-9. **Canon AE-1** (1976) - Máy ảnh film SLR 35mm
-10. **Casio Calculator Watch** (1985) - Đồng hồ tích hợp máy tính
-11. **Polaroid SX-70** (1972) - Máy ảnh chụp lấy liền
-12. **Sega Dreamcast** (1999) - Máy chơi game 128-bit của Sega
-
-## 🔧 Troubleshooting
-
-### Backend không kết nối được MongoDB
-```bash
-# Kiểm tra MongoDB đang chạy
-mongosh
-
-# Kiểm tra connection string trong .env
-# Đảm bảo MongoDB URI đúng format
-```
-
-### Frontend không gọi được API
-```bash
-# Kiểm tra NEXT_PUBLIC_API_URL trong .env.local
-# Đảm bảo backend đang chạy
-# Kiểm tra CORS settings trong backend
-```
-
-### Lỗi khi seed database
-```bash
-# Xóa database cũ
-mongosh
-use retro-electronics
-db.dropDatabase()
-
-# Chạy lại seed
-npm run seed
-```
-
-## 💡 Ý tưởng mở rộng
-
-- [ ] **Authentication**: Đăng nhập/đăng ký người dùng
-- [ ] **Comments**: Cho phép người dùng bình luận
-- [ ] **User Profiles**: Profile cá nhân với thiết bị yêu thích
-- [ ] **Image Upload**: Upload ảnh thật cho thiết bị
-- [ ] **Admin Dashboard**: Quản lý thiết bị qua giao diện
-- [ ] **Social Sharing**: Chia sẻ lên social media
-- [ ] **Advanced Filters**: Lọc theo năm, tags, thông số
-- [ ] **Compare Feature**: So sánh nhiều thiết bị
-- [ ] **Timeline View**: Xem thiết bị theo timeline
-- [ ] **Export/Import**: Xuất/nhập dữ liệu JSON
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## 👨‍💻 Tech Stack
-
-**Frontend:**
-- Next.js 14
-- TypeScript
-- React 18
-- Axios
-- Framer Motion
-- React Icons
-
-**Backend:**
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
-- Express Validator
-- CORS
 
 ---
 
-**Made with ❤️ and nostalgia | 2025**
+## 📦 Nội dung mẫu
+`go-backend/internal/data/seed.json` bao gồm:
+- 18+ thiết bị biểu tượng (Nokia 1110, Game Boy, Walkman, iPod Classic, ...).
+- Metadata: thời kỳ, độ hiếm, thông số, giá gốc và định giá sưu tầm.
+- Bộ sưu tập theo chủ đề, thành tích và dòng thời gian ký ức.
 
-Nếu bạn thích dự án này, hãy cho ⭐ trên GitHub!
+---
+
+## 📚 Tài liệu bổ sung
+- [QUICKSTART.md](./QUICKSTART.md) – Bắt đầu nhanh trong vài phút.
+- [COMPLETE_GUIDE.md](./COMPLETE_GUIDE.md) – Dive sâu vào kiến trúc, API, UI.
+- [FEATURES.md](./FEATURES.md) – Liệt kê đầy đủ tính năng.
+- [SUMMARY.md](./SUMMARY.md) – Tổng kết dự án Go + Nuxt.
+
+---
+
+## 🇬🇧 English Summary
+
+### What is this?
+A full-stack nostalgia experience rebuilt with a **Go (net/http)** backend and a **Nuxt 3 + Ionic Vue** frontend. The previous Node.js/Next.js stack has been archived to avoid directory conflicts; all active code lives inside `go-backend/` and `nuxt-frontend/`.
+
+### Why it matters
+- Modern, mobile-first UI with Ionic components and glassmorphism styling.
+- Rich sample content so the app feels alive on first launch.
+- Simple Go API that is easy to extend or swap for a database-backed repository later.
+
+### How to run
+Follow the steps in the setup section above—run the Go server, then start the Nuxt dev server that points to `http://localhost:8080/api` by default.
+
+Happy exploring! 💾
