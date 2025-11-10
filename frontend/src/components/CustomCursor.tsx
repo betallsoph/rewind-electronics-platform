@@ -6,8 +6,14 @@ export default function CustomCursor() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [followerPosition, setFollowerPosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    // Check if mobile
+    setIsMobile(window.innerWidth <= 768);
+
+    if (isMobile) return;
+
     const updatePosition = (e: MouseEvent) => {
       setPosition({ x: e.clientX, y: e.clientY });
     };
@@ -38,7 +44,9 @@ export default function CustomCursor() {
       window.removeEventListener('mouseover', handleMouseOver);
       clearInterval(interval);
     };
-  }, [position]);
+  }, [position, isMobile]);
+
+  if (isMobile) return null;
 
   return (
     <>

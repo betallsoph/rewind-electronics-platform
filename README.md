@@ -1,26 +1,33 @@
 # 📱 Hoài Niệm Thiết Bị Điện Tử | Retro Electronics
 
-Một trang blog đầy đủ với frontend (Next.js) và backend (Node.js) để lưu trữ và hoài niệm về các thiết bị điện tử huyền thoại qua các thời kỳ.
+> Một ứng dụng blog đầy đủ với frontend (Next.js) và backend (Node.js + MongoDB) để lưu trữ và hoài niệm về các thiết bị điện tử huyền thoại qua các thời kỳ.
 
-## 🌟 Tính năng
+**🚀 Production Ready** | **✨ Modern UI** | **🎮 Interactive** | **📱 Responsive**
 
-### Frontend (Next.js + TypeScript)
-- ✨ **Giao diện hiện đại**: Thiết kế đẹp mắt với gradient màu sắc, animations mượt mà
-- 📱 **Responsive**: Hoạt động tốt trên mọi thiết bị (desktop, tablet, mobile)
-- 🔍 **Tìm kiếm real-time**: Tìm kiếm nhanh thiết bị theo tên, mô tả
-- 📂 **Phân loại thiết bị**: Lọc theo danh mục (Điện thoại, Máy tính, Máy chơi game, Âm thanh, Máy ảnh)
-- 💝 **Tương tác**: Like và xem chi tiết thiết bị với modal đẹp mắt
-- 📄 **Phân trang**: Xử lý danh sách lớn với pagination
-- 🎨 **Phong cách retro**: Kết hợp giữa thiết kế hiện đại và cảm giác hoài cổ
+[Quick Start (8 min)](./QUICKSTART.md) · [Complete Guide](./COMPLETE_GUIDE.md) · [Features](./FEATURES.md)
 
-### Backend (Node.js + Express + MongoDB)
-- 🔐 **RESTful API**: API đầy đủ với validation
-- 🗄️ **MongoDB**: Database linh hoạt với Mongoose ODM
-- ✅ **Validation**: Express-validator để kiểm tra dữ liệu đầu vào
-- 📊 **Advanced Queries**: Filtering, searching, sorting, pagination
-- 📈 **Statistics**: Endpoint thống kê tổng quan
-- 🎯 **Optimized**: Indexes để tăng performance
-- 🔄 **CORS**: Hỗ trợ cross-origin requests
+## 🌟 Highlights
+
+### 🎨 Frontend Excellence
+- **4 View Modes**: Grid, Timeline 3D, Memory Wall, Achievements
+- **Glassmorphism UI**: Modern design với glass effects
+- **Custom Cursor**: Interactive cursor (desktop)
+- **Particle Background**: Animated canvas background
+- **Keyboard Shortcuts**: Fast navigation (press ⌨️ to see)
+- **Toast Notifications**: Real-time feedback
+- **Device Comparison**: Compare 2-3 devices side-by-side
+- **Rarity System**: Common → Uncommon → Rare → Legendary
+- **Era Explorer**: 70s → 80s → 90s → 2000s → 2010s
+- **Community Features**: Share memories, upvote, achievements
+
+### 🔧 Backend Power
+- **5 API Endpoints**: Devices, Categories, Memories, Collections, Achievements
+- **4 Database Models**: Device, Memory, Collection, Achievement
+- **Advanced Features**: Price history, device relationships, gamification
+- **Text Search**: Full-text search với MongoDB
+- **Real-time Stats**: Views, likes, upvotes tracking
+- **Validation**: Complete input validation
+- **Performance**: Indexed queries, optimized aggregations
 
 ## 🏗️ Cấu trúc dự án
 
