@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoài Niệm Thiết Bị Điện Tử | Retro Tech Memories</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">
+                <span class="retro-icon">📱</span>
+                Hoài Niệm Thiết Bị Điện Tử
+            </h1>
+            <p class="tagline">Những kỷ niệm về công nghệ xưa và nay</p>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <div class="container">
+            <button class="nav-btn active" data-category="all">Tất cả</button>
+            <button class="nav-btn" data-category="phone">Điện thoại</button>
+            <button class="nav-btn" data-category="computer">Máy tính</button>
+            <button class="nav-btn" data-category="console">Máy chơi game</button>
+            <button class="nav-btn" data-category="audio">Âm thanh</button>
+            <button class="nav-btn" data-category="camera">Máy ảnh</button>
+        </div>
+    </nav>
+
+    <main class="main">
+        <div class="container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="🔍 Tìm kiếm thiết bị..." />
+            </div>
+
+            <div class="grid" id="deviceGrid">
+                <!-- Devices will be dynamically loaded here -->
+            </div>
+        </div>
+    </main>
+
+    <div class="modal" id="deviceModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalBody">
+                <!-- Device details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Hoài Niệm Thiết Bị Điện Tử. Made with ❤️ and nostalgia.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
