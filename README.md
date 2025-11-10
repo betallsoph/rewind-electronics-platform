@@ -1,47 +1,49 @@
-# 📼 Rewind Electronics Platform (Go + Nuxt)
+# 📼 Rewind Electronics Platform (Go Backend + Nuxt 3 Frontend)
 
-> Một trải nghiệm hoài niệm hoàn toàn mới được xây dựng lại từ đầu với **Golang** cho backend và **Nuxt 3 + Ionic Vue** cho frontend.
+> A from-scratch rebuild of the nostalgia-driven electronics experience powered by a **Go (net/http)** API and a **Nuxt 3 + Ionic Vue** UI.
+>
+> _Bản dịch tiếng Việt được đặt ở cuối tài liệu._
 
-## ✨ Tổng quan
-- **Go backend** thuần `net/http` cung cấp các endpoint RESTful để lấy thiết bị, danh mục, ký ức, bộ sưu tập, bảng thành tích và tổng quan dashboard.
-- **Nuxt 3 frontend** kết hợp Ionic component library với hiệu ứng glassmorphism hiện đại, hỗ trợ lọc độ hiếm, so sánh thiết bị, timeline ký ức, bộ sưu tập và achievements.
-- **Dataset phong phú** được seed trực tiếp từ `internal/data/seed.json`, mang lại cảm giác retro ngay khi chạy ứng dụng.
+## ✨ What you'll find
+- **Production-ready Go backend** exposing REST endpoints for devices, categories, collections, achievements, memories, comparisons, and dashboard stats with configurable CORS.
+- **Nuxt 3 + Ionic frontend** delivering a glassmorphism-inspired interface with rarity filtering, multi-device comparison, animated stats, and retro storytelling.
+- **Rich sample dataset** shipped in `go-backend/internal/data/seed.json` so the experience feels alive on first run.
 
-## 🏗️ Cấu trúc dự án
+## 🏗 Project structure
 ```
 workspace/
 ├── go-backend/              # Golang API server
-│   ├── cmd/server/main.go   # Điểm khởi động
-│   ├── internal/api/        # HTTP handlers & router
-│   ├── internal/config/     # Đọc biến môi trường & CORS
-│   ├── internal/data/       # seed.json với đầy đủ thiết bị
-│   ├── internal/models/     # Định nghĩa domain models
-│   └── internal/repository/ # Store in-memory và logic lọc dữ liệu
+│   ├── cmd/server/main.go   # Application entrypoint
+│   ├── internal/api/        # HTTP handlers & router wiring
+│   ├── internal/config/     # Environment + CORS configuration
+│   ├── internal/data/       # seed.json with nostalgia content
+│   ├── internal/models/     # Domain models
+│   └── internal/repository/ # In-memory data store & query helpers
 │
-├── nuxt-frontend/           # Nuxt 3 + Ionic Vue ứng dụng chính
-│   ├── components/          # Hero banner, device grid, comparison drawer...
-│   ├── composables/         # useApi.ts kết nối backend
-│   ├── pages/               # Trang chủ
-│   ├── assets/styles/       # Glassmorphism & retro theme
-│   └── plugins/             # Ionic integration
+├── nuxt-frontend/           # Nuxt 3 + Ionic Vue application
+│   ├── components/          # Hero banner, device grid, comparison drawer…
+│   ├── composables/         # `useApi.ts` backend integration
+│   ├── pages/               # Landing page
+│   ├── assets/styles/       # Glassmorphism + retro styling
+│   └── plugins/             # Ionic setup
 │
-├── README.md                # Tài liệu chính
-├── QUICKSTART.md            # Hướng dẫn chạy nhanh
-├── COMPLETE_GUIDE.md        # Tài liệu chi tiết full-stack
-├── FEATURES.md              # Danh sách tính năng nổi bật
-└── SUMMARY.md               # Tổng quan deliverables
+├── README.md                # This overview (EN + VI)
+├── QUICKSTART.md            # Quick start checklist
+├── COMPLETE_GUIDE.md        # Full-stack deep dive
+├── FEATURES.md              # Feature catalogue
+└── SUMMARY.md               # Delivery summary
 ```
 
-## 🚀 Chạy thử trong 5 phút
-### 1. Go Backend
+## 🚀 Run the stack in minutes
+### 1. Go backend
 ```bash
 cd go-backend
-cp .env.example .env   # tuỳ chọn, dùng để cấu hình CORS
+cp .env.example .env   # optional – configure allowed origins
 GOPROXY=off go mod tidy
 go run ./cmd/server
-# Server mặc định tại http://localhost:8080
+# API lives at http://localhost:8080 by default
 ```
-Các endpoint chính:
+Key endpoints:
 - `GET /api/health`
 - `GET /api/devices?category=&era=&search=&rarity=`
 - `GET /api/devices/:id`
@@ -52,38 +54,55 @@ Các endpoint chính:
 - `GET /api/achievements`
 - `GET /api/dashboard`
 
-### 2. Nuxt Frontend
+### 2. Nuxt frontend
 ```bash
 cd nuxt-frontend
 npm install
 npm run dev
-# Ứng dụng chạy tại http://localhost:3000 và gọi API Go qua http://localhost:8080/api
+# The UI runs on http://localhost:3000 and calls the Go API on http://localhost:8080/api
 ```
-Cấu hình base URL khi deploy production:
+For production deployments, configure:
 ```bash
 NUXT_PUBLIC_API_BASE=https://your-domain.example.com/api
 ```
 
-## 🌈 Điểm nhấn giao diện Nuxt + Ionic
-- **Glassmorphism hero** với slogan retro & CTA.
-- **Bộ lọc độ hiếm** (Common → Legendary) và category pills ngay trong `DeviceGrid`.
-- **Comparison Drawer** cho phép chọn 2-3 thiết bị và hiển thị so sánh chi tiết từ API `/devices/compare`.
-- **Stats Panel** với số liệu tổng quan từ endpoint `/dashboard`.
-- **Memory Timeline** hiển thị ký ức theo từng thiết bị.
-- **Collections Showcase** và **Achievement Board** tái hiện bộ sưu tập & thành tích.
-- **Ionic components** (ion-card, ion-modal, ion-badge, ion-button) kết hợp cùng animation tinh tế tạo cảm giác app mobile hiện đại.
+## 🌈 Nuxt + Ionic UI highlights
+- **Glassmorphism hero** with retro tagline and call-to-action.
+- **Rarity filters** (Common → Legendary) and category pills inside `DeviceGrid`.
+- **Comparison Drawer** that lets you stack 2–3 devices and renders details from `/devices/compare`.
+- **Stats Panel** powered by `/dashboard` metrics.
+- **Memory Timeline** that narrates per-device stories.
+- **Collections Showcase** and **Achievement Board** for curated sets and gamified progress.
+- **Ionic components** (`ion-card`, `ion-modal`, `ion-badge`, `ion-button`) blended with subtle animations for a mobile-native feel.
 
-## 🧠 Dữ liệu mẫu
-Bộ dữ liệu trong `go-backend/internal/data/seed.json` bao gồm:
-- 18+ thiết bị từ Nokia 1110, Game Boy, Walkman đến iPod Classic.
-- Thông tin era, rarity, specs, giá trị nguyên bản và giá trị sưu tầm.
-- Dòng ký ức (memories), bộ sưu tập (collections) theo chủ đề, thành tích (achievements) và thống kê dashboard.
+## 🧠 Sample content
+`go-backend/internal/data/seed.json` ships with:
+- 18+ iconic devices (Nokia 1110, Game Boy, Walkman, iPod Classic, …).
+- Era, rarity, specs, original price, and collector valuation metadata.
+- Memories, themed collections, achievements, and dashboard statistics to explore immediately.
 
-## 📚 Tài liệu liên quan
-- [QUICKSTART.md](./QUICKSTART.md) – chạy nhanh backend & frontend.
-- [COMPLETE_GUIDE.md](./COMPLETE_GUIDE.md) – hướng dẫn chi tiết tính năng, API, UI.
-- [FEATURES.md](./FEATURES.md) – liệt kê mọi điểm nhấn giao diện & trải nghiệm.
-- [SUMMARY.md](./SUMMARY.md) – tổng kết deliverables của phiên bản Go + Nuxt.
+## 📚 See also
+- [QUICKSTART.md](./QUICKSTART.md) – streamlined setup.
+- [COMPLETE_GUIDE.md](./COMPLETE_GUIDE.md) – architecture, API, and UI details.
+- [FEATURES.md](./FEATURES.md) – full feature breakdown.
+- [SUMMARY.md](./SUMMARY.md) – delivery recap for this Go + Nuxt edition.
 
 ---
-**Made with ❤️ in Go + Vue**
+
+## 📼 Phiên bản tiếng Việt
+
+> Một trải nghiệm hoài niệm được xây dựng lại từ đầu với **Go (net/http)** cho backend và **Nuxt 3 + Ionic Vue** cho giao diện.
+
+### Điểm nổi bật
+- API Go cung cấp đầy đủ endpoint cho thiết bị, danh mục, bộ sưu tập, thành tích, ký ức, so sánh và dashboard.
+- Frontend Nuxt 3 + Ionic mang lại hiệu ứng glassmorphism, filter độ hiếm, so sánh đa thiết bị và storytelling retro.
+- Dataset phong phú trong `go-backend/internal/data/seed.json` giúp bạn khám phá ngay lập tức.
+
+### Chạy nhanh
+```bash
+cd go-backend && cp .env.example .env && go run ./cmd/server
+cd nuxt-frontend && npm install && npm run dev
+```
+Frontend chạy tại http://localhost:3000 và gọi API Go tại http://localhost:8080/api.
+
+Chúc bạn khám phá vui vẻ! 💾
