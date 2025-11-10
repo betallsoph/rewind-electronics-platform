@@ -1,0 +1,195 @@
+{
+  "devices": [
+    {
+      "id": "nokia-1110",
+      "name": "Nokia 1110",
+      "manufacturer": "Nokia",
+      "releaseYear": 2005,
+      "era": "2000s",
+      "categoryId": "mobile-phones",
+      "description": "Chiếc điện thoại phổ thông huyền thoại với độ bền trứ danh và thời lượng pin vô đối.",
+      "highlights": [
+        "Độ bền cao, chịu va đập tốt",
+        "Pin standby lên đến 2 tuần",
+        "Đèn pin tích hợp và nhạc chuông huyền thoại"
+      ],
+      "specifications": {
+        "Màn hình": "Monochrome 96x68",
+        "Kết nối": "GSM",
+        "Pin": "900 mAh",
+        "Trọng lượng": "80 g"
+      },
+      "media": {
+        "thumbnail": "/images/devices/nokia-1110.jpg",
+        "gallery": [
+          "/images/devices/nokia-1110-front.jpg",
+          "/images/devices/nokia-1110-side.jpg"
+        ]
+      },
+      "rarity": "common",
+      "priceHistory": [
+        { "year": 2005, "price": 49 },
+        { "year": 2010, "price": 20 },
+        { "year": 2020, "price": 80 }
+      ],
+      "stats": { "views": 15320, "likes": 8290, "upvotes": 2100 }
+    },
+    {
+      "id": "sony-walkman-wm2",
+      "name": "Sony Walkman WM-2",
+      "manufacturer": "Sony",
+      "releaseYear": 1985,
+      "era": "1980s",
+      "categoryId": "music",
+      "description": "Máy nghe nhạc cassette di động đưa âm nhạc đến mọi hành trình.",
+      "highlights": [
+        "Thiết kế nhỏ gọn, tinh tế",
+        "Âm thanh analog ấm áp",
+        "Đi kèm tai nghe MDR-3L2"
+      ],
+      "specifications": {
+        "Nguồn": "2 x AA",
+        "Trọng lượng": "280 g",
+        "Kết nối": "3.5mm Audio",
+        "Chất liệu": "Nhôm"
+      },
+      "media": {
+        "thumbnail": "/images/devices/sony-walkman.jpg",
+        "gallery": [
+          "/images/devices/sony-walkman-front.jpg",
+          "/images/devices/sony-walkman-kit.jpg"
+        ]
+      },
+      "rarity": "rare",
+      "priceHistory": [
+        { "year": 1985, "price": 120 },
+        { "year": 1995, "price": 60 },
+        { "year": 2024, "price": 320 }
+      ],
+      "stats": { "views": 9820, "likes": 6400, "upvotes": 1700 }
+    },
+    {
+      "id": "nintendo-game-boy",
+      "name": "Nintendo Game Boy",
+      "manufacturer": "Nintendo",
+      "releaseYear": 1989,
+      "era": "1980s",
+      "categoryId": "gaming",
+      "description": "Máy chơi game cầm tay thay đổi cả ngành công nghiệp game.",
+      "highlights": [
+        "Thư viện game đồ sộ",
+        "Thiết kế module với cartridge",
+        "Thời lượng pin lên đến 15 giờ"
+      ],
+      "specifications": {
+        "Màn hình": "LCD Monochrome",
+        "Pin": "4 x AA",
+        "CPU": "Sharp LR35902",
+        "Trò chơi nổi bật": "Tetris, Pokémon"
+      },
+      "media": {
+        "thumbnail": "/images/devices/game-boy.jpg",
+        "gallery": [
+          "/images/devices/game-boy-front.jpg",
+          "/images/devices/game-boy-playing.jpg"
+        ]
+      },
+      "rarity": "uncommon",
+      "priceHistory": [
+        { "year": 1989, "price": 89 },
+        { "year": 2000, "price": 40 },
+        { "year": 2024, "price": 220 }
+      ],
+      "stats": { "views": 12040, "likes": 9150, "upvotes": 3120 }
+    }
+  ],
+  "categories": [
+    {
+      "id": "mobile-phones",
+      "name": "Điện thoại di động",
+      "description": "Những chiếc điện thoại huyền thoại từng làm nên lịch sử",
+      "icon": "phone-portrait-outline",
+      "highlights": [
+        "Điện thoại phổ thông",
+        "Điện thoại thông minh đầu tiên",
+        "Thiết kế đặc trưng"
+      ]
+    },
+    {
+      "id": "music",
+      "name": "Âm nhạc",
+      "description": "Máy nghe nhạc mang cả thế giới giai điệu",
+      "icon": "musical-notes-outline",
+      "highlights": [
+        "Walkman",
+        "Discman",
+        "Máy nghe đĩa"
+      ]
+    },
+    {
+      "id": "gaming",
+      "name": "Gaming",
+      "description": "Máy chơi game qua các thời kỳ",
+      "icon": "game-controller-outline",
+      "highlights": [
+        "Console",
+        "Game cầm tay",
+        "Máy arcade"
+      ]
+    }
+  ],
+  "memories": [
+    {
+      "id": "memory-nokia-first-phone",
+      "deviceId": "nokia-1110",
+      "title": "Chiếc điện thoại đầu tiên của tôi",
+      "content": "Tôi nhận chiếc Nokia 1110 từ bố mẹ khi vào lớp 10. Chiếc máy này đã đồng hành cùng tôi qua biết bao kỳ thi và những lần nhắn tin 8x 9x.",
+      "era": "2000s",
+      "author": "Linh",
+      "createdAt": "2006-08-15T10:00:00Z",
+      "sentiment": "nostalgic"
+    },
+    {
+      "id": "memory-walkman-roadtrip",
+      "deviceId": "sony-walkman-wm2",
+      "title": "Âm nhạc trên mọi cung đường",
+      "content": "Walkman WM-2 đi cùng tôi trên chuyến xe xuyên Việt đầu tiên. Mọi bài hát trong cuộn băng đều là ký ức khó quên.",
+      "era": "1980s",
+      "author": "Minh",
+      "createdAt": "1988-06-01T07:00:00Z",
+      "sentiment": "joyful"
+    }
+  ],
+  "collections": [
+    {
+      "id": "collection-teenage-dream",
+      "name": "Thanh xuân 8x 9x",
+      "description": "Những thiết bị gắn liền với tuổi học trò",
+      "deviceIds": ["nokia-1110", "sony-walkman-wm2"],
+      "theme": "memory-lane"
+    },
+    {
+      "id": "collection-handheld-legends",
+      "name": "Huyền thoại cầm tay",
+      "description": "Bộ sưu tập những thiết bị cầm tay bất tử",
+      "deviceIds": ["nokia-1110", "nintendo-game-boy"],
+      "theme": "collectors"
+    }
+  ],
+  "achievements": [
+    {
+      "id": "achievement-first-love",
+      "name": "Mối tình đầu",
+      "description": "Chia sẻ ký ức đầu tiên với một thiết bị",
+      "criteria": "Đăng ký ức đầu tiên",
+      "tier": "bronze"
+    },
+    {
+      "id": "achievement-collector",
+      "name": "Nhà sưu tầm",
+      "description": "Yêu thích 5 thiết bị khác nhau",
+      "criteria": "Yêu thích 5 thiết bị",
+      "tier": "silver"
+    }
+  ]
+}
