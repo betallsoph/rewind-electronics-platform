@@ -1,0 +1,33 @@
+.searchBox {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.searchInput {
+  width: 100%;
+  max-width: 600px;
+  padding: 15px 25px;
+  font-size: 1.1rem;
+  border: 2px solid var(--secondary-color);
+  border-radius: 30px;
+  background-color: var(--card-bg);
+  color: var(--text-light);
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.searchInput:focus {
+  box-shadow: 0 0 20px rgba(78, 205, 196, 0.5);
+  transform: scale(1.02);
+}
+
+.searchInput::placeholder {
+  color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+  .searchInput {
+    font-size: 1rem;
+    padding: 12px 20px;
+  }
+}
