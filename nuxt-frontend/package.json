@@ -1,0 +1,29 @@
+{
+  "name": "retro-electronics-nuxt",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "preview": "nuxt preview",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@capacitor/core": "^6.0.0",
+    "@ionic/vue": "^8.1.2",
+    "@ionic/vue-router": "^8.1.2",
+    "@pinia/nuxt": "^0.5.1",
+    "@vueuse/core": "^11.0.0",
+    "axios": "^1.6.8",
+    "ionicons": "^7.2.1",
+    "nuxt": "^3.11.2"
+  },
+  "devDependencies": {
+    "@nuxt/eslint-config": "^0.4.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.23.0",
+    "sass": "^1.74.1",
+    "typescript": "^5.4.0"
+  }
+}

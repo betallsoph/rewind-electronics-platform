@@ -72,6 +72,25 @@ workspace/
 │   ├── .env.example
 │   └── .gitignore
 │
+├── go-backend/            # Go backend (net/http) với dataset trong bộ nhớ
+│   ├── cmd/server/main.go # API server entrypoint
+│   ├── internal/
+│   │   ├── api/           # HTTP handlers and router
+│   │   ├── config/        # Runtime configuration helpers
+│   │   ├── data/          # JSON dataset used to seed the store
+│   │   ├── models/        # Domain models shared across layers
+│   │   └── repository/    # In-memory data access layer
+│   └── go.mod
+│
+├── nuxt-frontend/         # Nuxt 3 + Ionic Vue frontend
+│   ├── components/        # Hero, device grid, comparisons, etc.
+│   ├── composables/       # API abstraction for backend calls
+│   ├── layouts/           # Ionic shell layout
+│   ├── pages/             # Main application page
+│   ├── assets/styles/     # Global glassmorphism styling
+│   ├── plugins/           # Ionic integration for Nuxt
+│   └── package.json
+│
 └── README.md
 ```
 
@@ -371,6 +390,47 @@ npm run seed
 - [ ] **Compare Feature**: So sánh nhiều thiết bị
 - [ ] **Timeline View**: Xem thiết bị theo timeline
 - [ ] **Export/Import**: Xuất/nhập dữ liệu JSON
+
+## 🧱 Phiên bản Go + Nuxt hiện đại
+
+Song song với stack Node.js/Next.js gốc, dự án cung cấp thêm một triển khai hoàn toàn bằng **Golang** và **Nuxt 3 + Ionic Vue** nhằm mang đến trải nghiệm full-stack hiện đại hơn và dễ dàng triển khai microservice.
+
+### 🔌 Go Backend (net/http API)
+- `go-backend/cmd/server/main.go`: Điểm khởi động API sử dụng net/http.
+- `go-backend/internal/data/seed.json`: Bộ dữ liệu mẫu chứa thiết bị, ký ức, bộ sưu tập và thành tựu.
+- Bộ định tuyến cung cấp các endpoint RESTful: `/api/devices`, `/api/devices/:id`, `/api/devices/compare`, `/api/categories`, `/api/memories`, `/api/collections`, `/api/achievements`, `/api/dashboard`.
+- Cấu hình CORS linh hoạt thông qua biến môi trường `ALLOWED_ORIGINS`.
+
+**Chạy backend:**
+
+```bash
+cd go-backend
+go run ./cmd/server
+# Server mặc định chạy tại http://localhost:8080
+```
+
+### 🖥️ Nuxt 3 + Ionic Frontend
+- Sử dụng Nuxt 3, Ionic Vue và Pinia để tạo giao diện glassmorphism responsive.
+- Các thành phần chính: `HeroBanner`, `DeviceGrid`, `ComparisonDrawer`, `StatsPanel`, `MemoryTimeline`, `AchievementBoard`.
+- Hỗ trợ lọc, tìm kiếm theo độ hiếm, so sánh nhiều thiết bị, xem số liệu tổng quan và dòng thời gian ký ức.
+- Plugin `plugins/ionic.client.ts` tích hợp Ionic vào Nuxt SSR.
+
+**Chạy frontend:**
+
+```bash
+cd nuxt-frontend
+npm install
+npm run dev
+# App chạy tại http://localhost:3000 và gọi API Go ở http://localhost:8080/api
+```
+
+Thiết lập biến môi trường cho frontend nếu triển khai production:
+
+```bash
+NUXT_PUBLIC_API_BASE=https://your-go-api.example.com/api
+```
+
+Bạn có thể tùy biến thêm dataset trong `go-backend/internal/data/seed.json` hoặc kết nối với cơ sở dữ liệu thực tế bằng cách thay thế lớp repository.
 
 ## 🤝 Contributing
 
