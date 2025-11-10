@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import styles from './MemoryWall.module.css';
 import { FaHeart, FaUser, FaMapMarkerAlt, FaCalendar } from 'react-icons/fa';
+import { useToast } from '@/contexts/ToastContext';
 import axios from 'axios';
 
 interface Memory {
@@ -26,6 +27,7 @@ interface MemoryWallProps {
 export default function MemoryWall({ deviceId }: MemoryWallProps) {
   const [memories, setMemories] = useState<Memory[]>([]);
   const [showForm, setShowForm] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
     title: '',
@@ -33,6 +35,7 @@ export default function MemoryWall({ deviceId }: MemoryWallProps) {
     year: new Date().getFullYear(),
     location: ''
   });
+  const toast = useToast();
 
   useEffect(() => {
     fetchMemories();
@@ -52,6 +55,7 @@ export default function MemoryWall({ deviceId }: MemoryWallProps) {
     e.preventDefault();
     if (!deviceId) return;
 
+    setLoading(true);
     try {
       await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/memories`, {
         ...formData,
@@ -60,8 +64,12 @@ export default function MemoryWall({ deviceId }: MemoryWallProps) {
       setShowForm(false);
       setFormData({ username: '', title: '', story: '', year: new Date().getFullYear(), location: '' });
       fetchMemories();
+      toast.success('Chia sẻ ký ức thành công! 💭');
     } catch (error) {
       console.error('Error creating memory:', error);
+      toast.error('Không thể chia sẻ ký ức');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -69,8 +77,10 @@ export default function MemoryWall({ deviceId }: MemoryWallProps) {
     try {
       await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/memories/${memoryId}/upvote`);
       fetchMemories();
+      toast.success('Đã upvote! 👍');
     } catch (error) {
       console.error('Error upvoting:', error);
+      toast.error('Không thể upvote');
     }
   };
 
@@ -131,8 +141,8 @@ export default function MemoryWall({ deviceId }: MemoryWallProps) {
             maxLength={2000}
             rows={6}
           />
-          <button type="submit" className="btn-neon">
-            Chia Sẻ Ký Ức
+          <button type="submit" className="btn-neon" disabled={loading}>
+            {loading ? 'Đang gửi...' : 'Chia Sẻ Ký Ức'}
           </button>
         </form>
       )}

@@ -11,8 +11,9 @@ export default function SearchBar({ value, onChange }: SearchBarProps) {
   return (
     <div className={styles.searchBox}>
       <input
+        id="searchInput"
         type="text"
-        placeholder="🔍 Tìm kiếm thiết bị..."
+        placeholder="🔍 Tìm kiếm thiết bị... (nhấn / để focus)"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className={styles.searchInput}

@@ -13,8 +13,11 @@ import Timeline3D from '@/components/Timeline3D';
 import DeviceComparison from '@/components/DeviceComparison';
 import MemoryWall from '@/components/MemoryWall';
 import AchievementDisplay from '@/components/AchievementDisplay';
+import KeyboardShortcuts from '@/components/KeyboardShortcuts';
 import { devicesApi, categoriesApi } from '@/lib/api';
 import type { Device, Category } from '@/types';
+import { useToast } from '@/contexts/ToastContext';
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import styles from './page.module.css';
 
 type ViewMode = 'grid' | 'timeline' | 'memories' | 'achievements';
@@ -34,6 +37,25 @@ export default function Home() {
   const [selectedForComparison, setSelectedForComparison] = useState<Device[]>([]);
   const [showComparison, setShowComparison] = useState<boolean>(false);
   const [username] = useState('Guest_' + Math.random().toString(36).substr(2, 9));
+  const toast = useToast();
+
+  // Keyboard shortcuts
+  useKeyboardShortcuts({
+    '/': () => document.getElementById('searchInput')?.focus(),
+    'g': () => setViewMode('grid'),
+    't': () => setViewMode('timeline'),
+    'm': () => setViewMode('memories'),
+    'a': () => setViewMode('achievements'),
+    'c': () => setCompareMode(!compareMode),
+    'escape': () => {
+      if (selectedDevice) setSelectedDevice(null);
+      if (showComparison) {
+        setShowComparison(false);
+        setCompareMode(false);
+        setSelectedForComparison([]);
+      }
+    },
+  });
 
   // Fetch categories
   useEffect(() => {
@@ -68,7 +90,9 @@ export default function Home() {
         }
       } catch (err: any) {
         console.error('Error fetching devices:', err);
-        setError(err.response?.data?.message || 'Không thể tải dữ liệu. Vui lòng thử lại sau.');
+        const errorMsg = err.response?.data?.message || 'Không thể tải dữ liệu. Vui lòng thử lại sau.';
+        setError(errorMsg);
+        toast.error(errorMsg);
       } finally {
         setLoading(false);
       }
@@ -110,8 +134,10 @@ export default function Home() {
       if (selectedDevice && selectedDevice._id === deviceId) {
         setSelectedDevice({ ...selectedDevice, likes: selectedDevice.likes + 1 });
       }
+      toast.success('Đã thích thiết bị! ❤️');
     } catch (err) {
       console.error('Error liking device:', err);
+      toast.error('Không thể thích thiết bị');
     }
   };
 
@@ -271,6 +297,7 @@ export default function Home() {
         )}
 
         <Footer />
+        <KeyboardShortcuts />
       </div>
     </>
   );

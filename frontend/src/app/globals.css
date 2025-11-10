@@ -357,43 +357,44 @@ body::before {
   }
 }
 
-/* Custom cursor */
-body {
-  cursor: none;
-}
+/* Custom cursor - only on desktop */
+@media (min-width: 769px) {
+  body {
+    cursor: none;
+  }
 
-.custom-cursor {
-  position: fixed;
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--primary);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transition: transform 0.1s ease;
-}
+  .custom-cursor {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--primary);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+  }
 
-.custom-cursor-follower {
-  position: fixed;
-  width: 40px;
-  height: 40px;
-  background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9998;
-  opacity: 0.3;
-  transition: transform 0.15s ease;
-}
+  .custom-cursor-follower {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.3;
+    transition: transform 0.15s ease;
+  }
 
-/* Interactive hover states */
-a, button, [role="button"] {
-  cursor: none;
-}
+  a, button, [role="button"] {
+    cursor: none;
+  }
 
-a:hover ~ .custom-cursor,
-button:hover ~ .custom-cursor {
-  transform: scale(1.5);
-  background: var(--primary);
+  a:hover ~ .custom-cursor,
+  button:hover ~ .custom-cursor {
+    transform: scale(1.5);
+    background: var(--primary);
+  }
 }
 
 /* Container */
@@ -411,13 +412,17 @@ button:hover ~ .custom-cursor {
     padding: 0 16px;
   }
   
-  body {
-    cursor: auto;
+  :root {
+    font-size: 14px;
   }
   
-  .custom-cursor,
-  .custom-cursor-follower {
-    display: none;
+  .glass-card {
+    border-radius: 12px;
+  }
+  
+  .btn-neon {
+    padding: 10px 20px;
+    font-size: 0.9rem;
   }
 }
 
